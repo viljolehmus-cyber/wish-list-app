@@ -2,29 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Wishful — your wish lists</title>
   <meta name="description" content="A beautiful, simple wish list app. Keep track of the things you want, share lists with friends and family." />
-  <meta name="theme-color" content="#f7f1ea" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#f6f0e8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Wishful" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%23c8553d'/><path d='M16 6l2.3 6.9L25 15l-6.7 2.1L16 24l-2.3-6.9L7 15l6.7-2.1z' fill='%23fff'/></svg>" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Icon set: one stroke family (Lucide-derived, ISC) used everywhere. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5l2 6 6 2.1-6 2-2 6.4-2-6.4-6-2 6-2.1z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.83 2.83 0 0 0-4-4L4 16zM13.5 6.5l4 4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  </svg>
+
   <header class="topbar">
     <a class="brand" href="./" aria-label="Wishful home">
-      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span class="brand-mark" aria-hidden="true"><svg><use href="#i-spark"/></svg></span>
       <span class="brand-name">Wishful</span>
     </a>
     <div class="topbar-actions">
       <button class="icon-btn" id="shareBtn" title="Share this list" aria-label="Share this list">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13"/></svg>
+        <svg aria-hidden="true"><use href="#i-share"/></svg>
       </button>
       <div class="menu-wrap">
         <button class="icon-btn" id="menuBtn" title="More" aria-label="More options" aria-haspopup="true" aria-expanded="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg>
+          <svg aria-hidden="true"><use href="#i-more"/></svg>
         </button>
         <div class="menu" id="menu" role="menu" hidden>
           <button role="menuitem" data-action="export">Export backup (.json)</button>
@@ -37,10 +57,11 @@
   </header>
 
   <div class="shared-banner" id="sharedBanner" hidden>
-    <span>👀 You're viewing a shared wish list. Tap <strong>I'll get this</strong> to keep track of what you're buying (saved on this device).</span>
+    <svg class="shared-banner-icon" aria-hidden="true"><use href="#i-eye"/></svg>
+    <p>You're viewing a shared wish list. Tap <strong>I'll get this</strong> to keep track of what you're buying. It's saved on this device only.</p>
     <div class="shared-banner-actions">
-      <button class="btn btn-ghost" id="saveSharedBtn">Save a copy</button>
-      <a class="btn btn-ghost" href="./">My lists</a>
+      <button class="btn btn-ghost btn-sm" id="saveSharedBtn">Save a copy</button>
+      <a class="btn btn-ghost btn-sm" href="./">My lists</a>
     </div>
   </div>
 
@@ -48,7 +69,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-head">
         <h2>Lists</h2>
-        <button class="btn-text" id="newListBtn">+ New</button>
+        <button class="btn-text" id="newListBtn"><svg aria-hidden="true"><use href="#i-plus"/></svg>New</button>
       </div>
       <nav class="list-nav" id="listNav" aria-label="Your wish lists"></nav>
     </aside>
@@ -63,38 +84,47 @@
         <button class="btn btn-ghost hero-edit" id="editListBtn">Edit list</button>
       </section>
 
-      <section class="stats" id="stats" aria-label="List summary"></section>
+      <section class="ledger" id="ledger" aria-label="List progress"></section>
 
       <section class="toolbar">
         <label class="search">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="search" id="search" placeholder="Search wishes…" aria-label="Search wishes" />
+          <svg aria-hidden="true"><use href="#i-search"/></svg>
+          <input type="search" id="search" placeholder="Search wishes" aria-label="Search wishes" />
+          <kbd class="search-kbd" aria-hidden="true">/</kbd>
         </label>
         <div class="chips" id="filterChips" role="tablist" aria-label="Filter by status">
-          <button class="chip is-active" data-filter="all" role="tab">All</button>
-          <button class="chip" data-filter="wanted" role="tab">Wanted</button>
-          <button class="chip" data-filter="reserved" role="tab">Reserved</button>
-          <button class="chip" data-filter="got" role="tab">Got it</button>
+          <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="chip" data-filter="wanted" role="tab" aria-selected="false">Wanted</button>
+          <button class="chip" data-filter="reserved" role="tab" aria-selected="false">Reserved</button>
+          <button class="chip" data-filter="got" role="tab" aria-selected="false">Got it</button>
         </div>
         <select id="sort" class="select" aria-label="Sort">
           <option value="priority">Sort: Priority</option>
           <option value="newest">Sort: Newest</option>
-          <option value="price-asc">Sort: Price ↑</option>
-          <option value="price-desc">Sort: Price ↓</option>
+          <option value="price-asc">Sort: Price, low to high</option>
+          <option value="price-desc">Sort: Price, high to low</option>
           <option value="name">Sort: Name</option>
         </select>
         <button class="btn btn-primary" id="addItemBtn">
-          <span aria-hidden="true">+</span> Add wish
+          <svg aria-hidden="true"><use href="#i-plus"/></svg>Add wish
         </button>
       </section>
 
       <section class="grid" id="grid" aria-live="polite"></section>
 
       <section class="empty" id="empty" hidden>
-        <div class="empty-art" aria-hidden="true">🎁</div>
-        <h3 id="emptyTitle">Nothing here yet</h3>
+        <svg class="empty-art" viewBox="0 0 120 120" aria-hidden="true">
+          <ellipse cx="60" cy="104" rx="38" ry="5" class="empty-art-shadow"/>
+          <rect x="24" y="52" width="72" height="48" rx="8" class="empty-art-box"/>
+          <rect x="18" y="38" width="84" height="18" rx="6" class="empty-art-lid"/>
+          <rect x="54" y="38" width="12" height="62" class="empty-art-ribbon"/>
+          <path d="M60 38c-6-14-26-18-26-6 0 6 10 8 26 6zM60 38c6-14 26-18 26-6 0 6-10 8-26 6z" class="empty-art-bow"/>
+          <path d="M98 16l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" class="empty-art-spark"/>
+          <path d="M20 22l1.3 3.7L25 27l-3.7 1.3L20 32l-1.3-3.7L15 27l3.7-1.3z" class="empty-art-spark"/>
+        </svg>
+        <h2 id="emptyTitle">Nothing here yet</h2>
         <p id="emptyText">Add the first thing you're wishing for.</p>
-        <button class="btn btn-primary" id="emptyAddBtn">+ Add a wish</button>
+        <button class="btn btn-primary" id="emptyAddBtn">Add a wish</button>
       </section>
     </main>
   </div>
@@ -105,18 +135,18 @@
       <header class="modal-head">
         <h2 id="itemDialogTitle">Add a wish</h2>
         <button type="button" class="icon-btn" data-close aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          <svg aria-hidden="true"><use href="#i-close"/></svg>
         </button>
       </header>
 
       <label class="field">
-        <span>What do you wish for? *</span>
+        <span>What do you wish for?</span>
         <input name="title" required maxlength="120" placeholder="e.g. Noise-cancelling headphones" autocomplete="off" />
       </label>
 
       <label class="field">
-        <span>Link</span>
-        <input name="url" type="text" placeholder="https://…" inputmode="url" autocomplete="off" />
+        <span>Link <em>optional</em></span>
+        <input name="url" type="text" placeholder="https://" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" />
       </label>
 
       <div class="field-row">
@@ -126,7 +156,7 @@
         </label>
         <label class="field">
           <span>Category</span>
-          <input name="category" list="categoryList" maxlength="40" placeholder="Tech, Books…" autocomplete="off" />
+          <input name="category" list="categoryList" maxlength="40" placeholder="Tech, Books" autocomplete="off" />
           <datalist id="categoryList"></datalist>
         </label>
       </div>
@@ -134,20 +164,20 @@
       <fieldset class="field">
         <legend>How much do you want it?</legend>
         <div class="segmented" id="prioritySeg">
-          <label><input type="radio" name="priority" value="1" /><span>🔥 Must have</span></label>
-          <label><input type="radio" name="priority" value="2" checked /><span>💛 Would love</span></label>
-          <label><input type="radio" name="priority" value="3" /><span>🌱 Nice to have</span></label>
+          <label><input type="radio" name="priority" value="1" /><span><svg aria-hidden="true"><use href="#i-flame"/></svg>Must have</span></label>
+          <label><input type="radio" name="priority" value="2" checked /><span><svg aria-hidden="true"><use href="#i-heart"/></svg>Would love</span></label>
+          <label><input type="radio" name="priority" value="3" /><span><svg aria-hidden="true"><use href="#i-sprout"/></svg>Nice to have</span></label>
         </div>
       </fieldset>
 
       <label class="field">
-        <span>Image URL</span>
-        <input name="image" type="text" placeholder="https://…/photo.jpg" inputmode="url" autocomplete="off" />
+        <span>Image link <em>optional</em></span>
+        <input name="image" type="text" placeholder="https://…/photo.jpg" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" />
       </label>
 
       <label class="field">
         <span>Notes</span>
-        <textarea name="notes" rows="3" maxlength="500" placeholder="Size, colour, model, anything that helps…"></textarea>
+        <textarea name="notes" rows="3" maxlength="500" placeholder="Size, colour, model, anything that helps"></textarea>
       </label>
 
       <footer class="modal-foot">
@@ -165,13 +195,13 @@
       <header class="modal-head">
         <h2 id="listDialogTitle">New list</h2>
         <button type="button" class="icon-btn" data-close aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          <svg aria-hidden="true"><use href="#i-close"/></svg>
         </button>
       </header>
 
       <label class="field">
-        <span>Name *</span>
-        <input name="name" required maxlength="60" placeholder="e.g. Birthday, Holidays, Home…" autocomplete="off" />
+        <span>Name</span>
+        <input name="name" required maxlength="60" placeholder="Birthday, Holidays, Home" autocomplete="off" />
       </label>
 
       <fieldset class="field">
@@ -210,17 +240,17 @@
       <header class="modal-head">
         <h2 id="shareDialogTitle">Share this list</h2>
         <button type="button" class="icon-btn" data-close aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          <svg aria-hidden="true"><use href="#i-close"/></svg>
         </button>
       </header>
-      <p class="muted">Anyone with this link can see a snapshot of your list. Items you've marked <em>Got it</em> are left out. If you add more wishes later, share a fresh link.</p>
+      <p class="muted">Anyone with this link sees a snapshot of your list. Items you've marked <em>Got it</em> are left out. Added more wishes later? Share a fresh link.</p>
       <label class="check">
         <input type="checkbox" id="shareHideReserved" checked />
-        <span>Hide which items are reserved (keep the surprise!)</span>
+        <span>Hide which items are reserved, to keep the surprise</span>
       </label>
       <div class="share-row">
         <input id="shareUrl" readonly aria-label="Share link" />
-        <button class="btn btn-primary" id="copyShareBtn">Copy</button>
+        <button class="btn btn-primary" id="copyShareBtn">Copy link</button>
       </div>
       <button class="btn btn-ghost share-native" id="nativeShareBtn" hidden>Share via…</button>
     </div>

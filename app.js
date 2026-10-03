@@ -10,31 +10,17 @@
 
   const EMOJIS = ['🎁', '🎂', '🎄', '🏠', '✈️', '📚', '🎧', '👟', '💍', '🧸', '🎮', '🌿', '🍳', '🎨', '💻', '⭐'];
   const PRIORITY = {
-    1: { icon: '🔥', label: 'Must have' },
-    2: { icon: '💛', label: 'Would love' },
-    3: { icon: '🌱', label: 'Nice to have' },
+    1: { icon: 'flame', label: 'Must have' },
+    2: { icon: 'heart', label: 'Would love' },
+    3: { icon: 'sprout', label: 'Nice to have' },
   };
   const STATUS_CYCLE = { wanted: 'reserved', reserved: 'got', got: 'wanted' };
-  const STATUS_LABEL = { wanted: '♡ Wanted', reserved: '◎ Reserved', got: '✓ Got it' };
-  const STATUS_ORDER = { wanted: 0, reserved: 1, got: 2 };
-  const GRADIENTS = [
-    'linear-gradient(135deg, #fde2d4, #f9c6b5)',
-    'linear-gradient(135deg, #fbe7c6, #f6cf8f)',
-    'linear-gradient(135deg, #d9f0e3, #a9dcc0)',
-    'linear-gradient(135deg, #dfe8fb, #b7c9f2)',
-    'linear-gradient(135deg, #efe0f7, #d4b8ea)',
-    'linear-gradient(135deg, #fde0ea, #f5b3c8)',
-    'linear-gradient(135deg, #e2f3f5, #a9d9df)',
-  ];
-  const CATEGORY_EMOJI = {
-    tech: '💻', electronics: '💻', gadgets: '📱', books: '📚', book: '📚', reading: '📚',
-    home: '🏠', decor: '🪴', kitchen: '🍳', cooking: '🍳', clothes: '👕', clothing: '👕',
-    fashion: '👗', shoes: '👟', accessories: '👜', jewelry: '💍', jewellery: '💍',
-    games: '🎮', gaming: '🎮', toys: '🧸', kids: '🧸', beauty: '💄', wellness: '🧖',
-    sports: '⚽', fitness: '🏋️', outdoors: '🏕️', travel: '✈️', music: '🎵', art: '🎨',
-    crafts: '🧶', garden: '🌿', plants: '🪴', experiences: '🎟️', experience: '🎟️',
-    food: '🍫', drinks: '🍷', pets: '🐾', car: '🚗', bike: '🚲', photography: '📷',
+  const STATUS_UI = {
+    wanted: { icon: 'circle', label: 'Wanted' },
+    reserved: { icon: 'bookmark', label: 'Reserved' },
+    got: { icon: 'check', label: 'Got it' },
   };
+  const TONES = 6;
 
   /* ---------- helpers ---------- */
 
@@ -100,7 +86,11 @@
     return 'just now';
   }
 
-  const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+  const icon = (name) => `<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const monogram = (title) => escapeHtml((Array.from(title.trim())[0] || '?').toUpperCase());
+  const toneOf = (id) => parseInt(hashStr(id), 36) % TONES;
+
+  const plural = (n, word) => `${n} ${n === 1 ? word : word.endsWith('sh') ? word + 'es' : word + 's'}`;
 
   /* ---------- data ---------- */
 
@@ -278,7 +268,7 @@
     heroEmoji: $('#heroEmoji'),
     listTitle: $('#listTitle'),
     listSub: $('#listSub'),
-    stats: $('#stats'),
+    ledger: $('#ledger'),
     grid: $('#grid'),
     empty: $('#empty'),
     emptyTitle: $('#emptyTitle'),
@@ -305,9 +295,12 @@
 
     renderSidebar();
     renderHero();
-    renderStats();
+    renderLedger();
     renderGrid();
   }
+
+  // Card entrances play only when a list first appears, never on everyday re-renders.
+  let enterNext = true;
 
   function renderSidebar() {
     if (shared) return;
@@ -324,49 +317,62 @@
       .join('');
   }
 
+  const sumPrices = (arr) => arr.reduce((t, i) => t + (i.price || 0), 0);
+
   function renderHero() {
     const list = currentList();
+    const items = list.items;
     el.heroEmoji.textContent = list.emoji;
     el.listTitle.textContent = list.name;
-    el.listSub.textContent = shared
-      ? 'A wish list shared with you'
-      : `${plural(list.items.length, 'wish')} · updated ${relativeTime(list.updatedAt)}`;
+    let parts;
+    if (shared) {
+      const available = items.filter((i) => statusOf(i) === 'wanted');
+      parts = [`Shared with you`, `<strong>${available.length}</strong> of ${plural(items.length, 'wish')} still available`];
+    } else {
+      const open = items.filter((i) => i.status !== 'got');
+      const toGo = money(sumPrices(open), list.currency);
+      parts = items.length
+        ? [`<strong>${open.length}</strong> open ${open.length === 1 ? 'wish' : 'wishes'}`]
+        : ['No wishes yet'];
+      if (open.length && sumPrices(open) > 0) parts.push(`<strong>${escapeHtml(toGo)}</strong> to go`);
+      parts.push(`updated ${relativeTime(list.updatedAt)}`);
+    }
+    el.listSub.innerHTML = parts.join(' · ');
     document.title = `${list.name} — Wishful`;
   }
 
-  function renderStats() {
+  function renderLedger() {
     const list = currentList();
     const items = list.items;
-    const sum = (arr) => arr.reduce((s, i) => s + (i.price || 0), 0);
-    let cards;
+    let segs;
     if (shared) {
       const mine = items.filter((i) => shared.picks.has(i.id));
-      const available = items.filter((i) => statusOf(i) === 'wanted');
-      cards = [
-        ['Wishes', items.length],
-        ['Still available', available.length],
-        ["You're getting", mine.length],
-        ['Your total', money(sum(mine), list.currency) || '—'],
+      const taken = items.filter((i) => !shared.picks.has(i.id) && i.status === 'reserved');
+      const free = items.length - mine.length - taken.length;
+      const mineTotal = sumPrices(mine);
+      segs = [
+        ['got', mine.length, `You're getting ${mine.length}${mineTotal ? ` · ${money(mineTotal, list.currency)}` : ''}`],
+        ['reserved', taken.length, `${taken.length} reserved`],
+        ['wanted', free, `${free} available`],
       ];
     } else {
-      const got = items.filter((i) => i.status === 'got');
-      const open = items.filter((i) => i.status !== 'got');
-      const reserved = items.filter((i) => i.status === 'reserved');
-      const pct = items.length ? Math.round((got.length / items.length) * 100) : 0;
-      cards = [
-        ['Wishes', open.length],
-        ['Still to get', money(sum(open), list.currency) || '—'],
-        ['Reserved', reserved.length],
-        ['Fulfilled', `${got.length}/${items.length}`, pct],
+      const count = (st) => items.filter((i) => i.status === st).length;
+      segs = [
+        ['got', count('got'), `${count('got')} got`],
+        ['reserved', count('reserved'), `${count('reserved')} reserved`],
+        ['wanted', count('wanted'), `${count('wanted')} wanted`],
       ];
     }
-    el.stats.innerHTML = cards
-      .map(([label, value, pct]) => `<div class="stat">
-        <div class="stat-label">${escapeHtml(label)}</div>
-        <div class="stat-value">${escapeHtml(value)}</div>
-        ${pct != null ? `<div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Fulfilled"><span style="width:${pct}%"></span></div>` : ''}
-      </div>`)
-      .join('');
+    el.ledger.hidden = items.length === 0;
+    if (!items.length) return;
+    const shown = segs.filter(([, n]) => n > 0);
+    el.ledger.innerHTML = `
+      <div class="ledger-bar" role="img" aria-label="${escapeHtml(shown.map(([, , t]) => t).join(', '))}">
+        ${shown.map(([cls, n]) => `<span class="ledger-seg ${cls}" style="flex-grow:${n}"></span>`).join('')}
+      </div>
+      <ul class="ledger-legend">
+        ${shown.map(([cls, , text]) => `<li class="${cls}"><i></i>${escapeHtml(text)}</li>`).join('')}
+      </ul>`;
   }
 
   function visibleItems() {
@@ -399,8 +405,6 @@
   function cardHtml(item, list, index) {
     const status = statusOf(item);
     const p = PRIORITY[item.priority];
-    const grad = GRADIENTS[parseInt(hashStr(item.id), 36) % GRADIENTS.length];
-    const emoji = CATEGORY_EMOJI[item.category.toLowerCase()] || list.emoji;
     const host = hostOf(item.url);
     const price = money(item.price, list.currency);
     const titleHtml = item.url
@@ -409,41 +413,43 @@
 
     let statusBadge = '';
     if (status === 'reserved') statusBadge = `<span class="badge badge-reserved">${shared && shared.picks.has(item.id) ? 'For you' : 'Reserved'}</span>`;
-    if (status === 'got') statusBadge = '<span class="badge badge-got">Got it ✓</span>';
+    if (status === 'got') statusBadge = `<span class="badge badge-got">${icon('check')}Got it</span>`;
 
     let statusBtn;
     if (shared) {
       const mine = shared.picks.has(item.id);
       const takenByOther = !mine && item.status === 'reserved';
       statusBtn = takenByOther
-        ? '<button class="status-btn is-reserved" disabled>Already reserved</button>'
-        : `<button class="status-btn${mine ? ' is-reserved' : ''}" data-act="pick" aria-pressed="${mine}">${mine ? '✓ Getting it' : '🎁 I’ll get this'}</button>`;
+        ? `<button class="status-btn is-reserved" disabled>${icon('bookmark')}Reserved</button>`
+        : `<button class="status-btn${mine ? ' is-reserved' : ''}" data-act="pick" aria-pressed="${mine}">${mine ? `${icon('check')}Getting it` : `${icon('gift')}I’ll get this`}</button>`;
     } else {
-      statusBtn = `<button class="status-btn is-${status}" data-act="status" title="Click to change status">${STATUS_LABEL[status]}</button>`;
+      const ui = STATUS_UI[status];
+      const next = STATUS_UI[STATUS_CYCLE[status]].label;
+      statusBtn = `<button class="status-btn is-${status}" data-act="status" title="Mark as ${next}" aria-label="${ui.label}. Mark as ${next}">${icon(ui.icon)}${ui.label}</button>`;
     }
 
     const meta = [item.category && escapeHtml(item.category), host && `<span class="host">${escapeHtml(host)}</span>`]
       .filter(Boolean)
-      .join('<span class="dot">·</span>');
+      .join('<span aria-hidden="true">·</span>');
 
-    return `<article class="card is-${status}" data-id="${escapeHtml(item.id)}" style="--card-grad:${grad};animation-delay:${Math.min(index, 12) * 30}ms">
-      <div class="card-media">
-        ${item.image ? `<img src="${escapeHtml(item.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" />` : `<span class="card-media-emoji" aria-hidden="true">${emoji}</span>`}
+    return `<article class="card is-${status}" data-id="${escapeHtml(item.id)}" style="animation-delay:${Math.min(index, 10) * 40}ms">
+      <div class="card-media tone-${toneOf(item.id)}">
+        ${item.image ? `<img src="${escapeHtml(item.image)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />` : `<span class="card-monogram" aria-hidden="true">${monogram(item.title)}</span>`}
         <div class="card-badges">
-          <span class="badge" title="${p.label}">${p.icon}<span class="badge-text"> ${p.label}</span></span>
+          <span class="badge badge-p${item.priority}" title="${p.label}">${icon(p.icon)}<span class="badge-text">${p.label}</span></span>
           ${statusBadge}
         </div>
       </div>
       <div class="card-body">
         ${meta ? `<div class="card-meta">${meta}</div>` : ''}
-        <h3 class="card-title">${titleHtml}</h3>
+        <h2 class="card-title">${titleHtml}</h2>
         ${item.notes ? `<p class="card-notes">${escapeHtml(item.notes)}</p>` : ''}
         <div class="card-price${price ? '' : ' is-empty'}">${price ? escapeHtml(price) : 'No price set'}</div>
       </div>
       <div class="card-actions">
         ${statusBtn}
-        ${item.url ? `<a class="icon-btn" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" title="Open link" aria-label="Open link for ${escapeHtml(item.title)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg></a>` : ''}
-        ${shared ? '' : `<button class="icon-btn" data-act="edit" title="Edit" aria-label="Edit ${escapeHtml(item.title)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4zM13.5 6.5l4 4"/></svg></button>`}
+        ${item.url ? `<a class="icon-btn" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" title="Open link" aria-label="Open link for ${escapeHtml(item.title)}">${icon('external')}</a>` : ''}
+        ${shared ? '' : `<button class="icon-btn" data-act="edit" title="Edit" aria-label="Edit ${escapeHtml(item.title)}">${icon('pencil')}</button>`}
       </div>
     </article>`;
   }
@@ -451,6 +457,8 @@
   function renderGrid() {
     const list = currentList();
     const items = visibleItems();
+    el.grid.classList.toggle('is-entering', enterNext);
+    enterNext = false;
     el.grid.innerHTML = items.map((it, i) => cardHtml(it, list, i)).join('');
 
     const filtered = list.items.length > 0;
@@ -465,25 +473,25 @@
       } else {
         el.emptyTitle.textContent = shared ? 'This list is empty' : 'Nothing here yet';
         el.emptyText.textContent = shared
-          ? 'Looks like every wish has already been fulfilled. 🎉'
+          ? 'Every wish on it has already been fulfilled.'
           : 'Add the first thing you’re wishing for — a link, a price and a note is all it takes.';
-        el.emptyAddBtn.textContent = '+ Add a wish';
+        el.emptyAddBtn.textContent = 'Add a wish';
         el.emptyAddBtn.dataset.mode = 'add';
         el.emptyAddBtn.hidden = !!shared;
       }
     }
   }
 
-  // Broken image → fall back to the emoji placeholder.
+  // Broken image → fall back to the monogram art.
   el.grid.addEventListener('error', (e) => {
     const img = e.target;
     if (img.tagName !== 'IMG') return;
     const card = img.closest('.card');
     const item = card && currentList().items.find((i) => i.id === card.dataset.id);
     const span = document.createElement('span');
-    span.className = 'card-media-emoji';
+    span.className = 'card-monogram';
     span.setAttribute('aria-hidden', 'true');
-    span.textContent = (item && CATEGORY_EMOJI[item.category.toLowerCase()]) || currentList().emoji;
+    span.textContent = item ? (Array.from(item.title.trim())[0] || '?').toUpperCase() : '?';
     img.replaceWith(span);
   }, true);
 
@@ -511,22 +519,29 @@
 
   /* ---------- confetti ---------- */
 
+  // A short burst of paper confetti in the card-art palette. Rare moment, so it may be playful.
   function celebrate(x, y) {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const bits = ['🎉', '✨', '💖', '⭐', '🎊'];
-    for (let i = 0; i < 16; i++) {
+    const cs = getComputedStyle(document.documentElement);
+    const colors = [0, 1, 2, 3, 4, 5].map((i) => cs.getPropertyValue(`--tone-${i}-ink`).trim());
+    for (let i = 0; i < 22; i++) {
       const s = document.createElement('span');
-      s.textContent = bits[i % bits.length];
-      s.style.cssText = `position:fixed;left:${x}px;top:${y}px;z-index:60;pointer-events:none;font-size:${14 + Math.random() * 10}px`;
+      const w = 5 + Math.random() * 4;
+      const round = i % 3 === 0;
+      s.style.cssText = `position:fixed;left:${x}px;top:${y}px;z-index:60;pointer-events:none;width:${w}px;height:${round ? w : w * 1.8}px;border-radius:${round ? '50%' : '2px'};background:${colors[i % colors.length]}`;
       document.body.appendChild(s);
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 60 + Math.random() * 90;
+      const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.4;
+      const dist = 50 + Math.random() * 80;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const spin = (Math.random() - 0.5) * 720;
       s.animate(
         [
-          { transform: 'translate(-50%, -50%) scale(.4)', opacity: 1 },
-          { transform: `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist - 40}px)) scale(1) rotate(${Math.random() * 360}deg)`, opacity: 0 },
+          { transform: 'translate(-50%, -50%) scale(.6)', opacity: 1 },
+          { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) rotate(${spin / 2}deg)`, opacity: 1, offset: 0.55 },
+          { transform: `translate(calc(-50% + ${dx * 1.15}px), calc(-50% + ${dy + 70}px)) rotate(${spin}deg)`, opacity: 0 },
         ],
-        { duration: 700 + Math.random() * 400, easing: 'cubic-bezier(.2,.8,.2,1)' },
+        { duration: 900 + Math.random() * 300, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' },
       ).onfinish = () => s.remove();
     }
   }
@@ -661,6 +676,7 @@
       const list = normalizeList({ name, emoji: pickedEmoji, currency });
       state.lists.push(list);
       state.activeListId = list.id;
+      enterNext = true;
       save();
       toast(`Created “${list.name}”`);
     }
@@ -674,6 +690,7 @@
     if (!confirm(`Delete “${list.name}” and its ${plural(list.items.length, 'wish')}? This can’t be undone.`)) return;
     state.lists = state.lists.filter((l) => l.id !== list.id);
     state.activeListId = state.lists[0].id;
+    enterNext = true;
     save();
     listDialog.close();
     render();
@@ -743,6 +760,7 @@
       lists.forEach((l) => { l.id = uid(); });
       state.lists.push(...lists);
       state.activeListId = lists[0].id;
+      enterNext = true;
       save();
       if (shared) leaveShared();
       render();
@@ -780,6 +798,7 @@
   el.listNav.addEventListener('click', (e) => {
     const b = e.target.closest('[data-list]');
     if (!b) return;
+    if (state.activeListId !== b.dataset.list) enterNext = true;
     state.activeListId = b.dataset.list;
     save();
     render();
@@ -802,7 +821,7 @@
       if (item.status === 'got') {
         const r = btn.getBoundingClientRect();
         celebrate(r.left + r.width / 2, r.top + r.height / 2);
-        toast(`Yay! “${item.title}” is yours 🎉`);
+        toast(`“${item.title}” is yours. Enjoy!`);
       }
       render();
     }
@@ -852,6 +871,7 @@
     const copy = normalizeList({ ...shared.list, id: uid(), items: shared.list.items.map((i) => ({ ...i, id: uid(), status: 'wanted' })) });
     state.lists.push(copy);
     state.activeListId = copy.id;
+    enterNext = true;
     save();
     leaveShared();
     render();
@@ -888,7 +908,7 @@
     if (e.key === STORAGE_KEY) { state = load(); render(); }
   });
 
-  window.addEventListener('hashchange', () => { readHash(); render(); });
+  window.addEventListener('hashchange', () => { readHash(); enterNext = true; render(); });
 
   // Refresh "updated x ago" now and then.
   setInterval(renderHero, 60000);

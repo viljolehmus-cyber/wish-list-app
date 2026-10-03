@@ -2,7 +2,7 @@
 
 A simple wish list app. Keep track of what you want, see what you've got, and share a list with friends and family.
 
-No build step, no dependencies, no account. Open `index.html` in a browser and start adding wishes.
+No build step, no dependencies, no account, and it works offline. Open `index.html` in a browser and start adding wishes.
 
 ## Features
 
@@ -38,3 +38,8 @@ Everything is saved in your browser's `localStorage`, so it never leaves your de
 | `index.html` | Page structure and dialogs                         |
 | `styles.css` | Design tokens, light/dark themes, responsive layout |
 | `app.js`     | State, rendering, sharing, import/export           |
+| `fonts/`     | Self-hosted Fraunces and Hanken Grotesk (SIL OFL)  |
+
+## Design
+
+The app is designed as a warm "gift catalogue": paper-toned surfaces, Fraunces for headings and Hanken Grotesk for the interface, with one coral accent. Wishes without a photo get a large italic initial on a soft tone instead of a stock icon. Icons are one hand-picked SVG set (derived from Lucide, ISC). Motion is kept for moments that need it, uses strong ease-out curves and respects reduced-motion. On phones, dialogs open as bottom sheets.
