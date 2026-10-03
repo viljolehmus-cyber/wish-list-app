@@ -3,212 +3,221 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Wishful — your wish lists</title>
-  <meta name="description" content="A beautiful, simple wish list app. Keep track of the things you want, share lists with friends and family." />
-  <meta name="theme-color" content="#f6f0e8" />
+  <title>Wishlist</title>
+  <meta name="description" content="Keep track of the things you want, save towards them, and share your list with friends and family." />
+  <meta name="theme-color" content="#ffffff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Wishful" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%23c8553d'/><path d='M16 6l2.3 6.9L25 15l-6.7 2.1L16 24l-2.3-6.9L7 15l6.7-2.1z' fill='%23fff'/></svg>" />
+  <meta name="apple-mobile-web-app-title" content="Wishlist" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='16' fill='%231f5bff'/><path d='M16 24s-7-4.3-7-9.2A3.8 3.8 0 0 1 16 12.6a3.8 3.8 0 0 1 7 2.2C23 19.7 16 24 16 24z' fill='%23fff'/></svg>" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Icon set: one stroke family (Lucide-derived, ISC) used everywhere. -->
+  <!-- One stroke icon family (Lucide-derived, ISC). -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5l2 6 6 2.1-6 2-2 6.4-2-6.4-6-2 6-2.1z" fill="currentColor" stroke="none"/></symbol>
-    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
-    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
-    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></symbol>
-    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
-    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
-    <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></symbol>
-    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
-    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.83 2.83 0 0 0-4-4L4 16zM13.5 6.5l4 4"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
-    <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13"/></symbol>
-    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></symbol>
-    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="19" cy="12" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+    <symbol id="i-lists" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.83 2.83 0 0 0-4-4L4 16zM13.5 6.5l4 4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13M9 7V4h6v3"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
+    <!-- Wish icons -->
+    <symbol id="w-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+    <symbol id="w-headphones" viewBox="0 0 24 24"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></symbol>
+    <symbol id="w-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="w-shoe" viewBox="0 0 24 24"><path d="M2.5 17.5V9.8c0-.7.6-1.3 1.3-1.3h1.4c.5 0 .9.3 1.1.7.6 1.3 1.7 1.8 2.9 1.8h1.3l1.3-1.6 2 1.4c.6.4 1.2.6 1.9.7l2.2.3c2.4.3 3.6 1.9 3.6 3.6v2.1z"/><path d="M2.5 17.5V20h19v-2.5"/></symbol>
+    <symbol id="w-keyboard" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 12.5h.01M10 12.5h.01M14 12.5h.01M18 12.5h.01M7.5 16h9"/></symbol>
+    <symbol id="w-cup" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4zM6 2v2M10 2v2M14 2v2"/></symbol>
+    <symbol id="w-book" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol>
+    <symbol id="w-laptop" viewBox="0 0 24 24"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></symbol>
+    <symbol id="w-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="w-watch" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><path d="M12 10v2l1 1M16.1 7.7l-.8-4A2 2 0 0 0 13.3 2h-2.6a2 2 0 0 0-2 1.6l-.8 4.1M7.9 16.4l.8 4a2 2 0 0 0 2 1.6h2.7a2 2 0 0 0 2-1.6l.8-4"/></symbol>
+    <symbol id="w-gamepad" viewBox="0 0 24 24"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01M17.3 5H6.7a4 4 0 0 0-4 3.6l-.6 5.4A2.6 2.6 0 0 0 4.7 17c1 0 1.8-.5 2.2-1.4l.9-1.6h8.4l.9 1.6c.4.9 1.2 1.4 2.2 1.4a2.6 2.6 0 0 0 2.6-3l-.6-5.4a4 4 0 0 0-4-3.6z"/></symbol>
+    <symbol id="w-shirt" viewBox="0 0 24 24"><path d="M20.4 3.5 16 2a4 4 0 0 1-8 0L3.6 3.5a2 2 0 0 0-1.3 2.2l.6 3.5a1 1 0 0 0 1 .8H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.1a1 1 0 0 0 1-.8l.6-3.5a2 2 0 0 0-1.3-2.2z"/></symbol>
+    <symbol id="w-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zM13 5v2M13 17v2M13 11v2"/></symbol>
+    <symbol id="w-plant" viewBox="0 0 24 24"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></symbol>
+    <symbol id="w-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></symbol>
+    <symbol id="w-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="w-bed" viewBox="0 0 24 24"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8M2 16h20M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/></symbol>
   </svg>
 
-  <header class="topbar">
-    <a class="brand" href="./" aria-label="Wishful home">
-      <span class="brand-mark" aria-hidden="true"><svg><use href="#i-spark"/></svg></span>
-      <span class="brand-name">Wishful</span>
-    </a>
-    <div class="topbar-actions">
-      <button class="icon-btn" id="shareBtn" title="Share this list" aria-label="Share this list">
-        <svg aria-hidden="true"><use href="#i-share"/></svg>
-      </button>
-      <div class="menu-wrap">
-        <button class="icon-btn" id="menuBtn" title="More" aria-label="More options" aria-haspopup="true" aria-expanded="false">
-          <svg aria-hidden="true"><use href="#i-more"/></svg>
-        </button>
-        <div class="menu" id="menu" role="menu" hidden>
-          <button role="menuitem" data-action="export">Export backup (.json)</button>
-          <button role="menuitem" data-action="import">Import backup…</button>
-          <button role="menuitem" data-action="theme">Toggle dark mode</button>
+  <div class="stage">
+    <!-- List screen -->
+    <section class="screen screen-list" id="listScreen" aria-label="Wishes">
+      <header class="topbar">
+        <h1 class="wordmark">wishlist</h1>
+        <div class="topbar-actions">
+          <button class="round-btn" id="searchBtn" aria-label="Search wishes" aria-expanded="false"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
+          <button class="avatar" id="avatarBtn" aria-label="Your lists"></button>
         </div>
-      </div>
-      <input type="file" id="importFile" accept="application/json,.json" hidden />
-    </div>
-  </header>
-
-  <div class="shared-banner" id="sharedBanner" hidden>
-    <svg class="shared-banner-icon" aria-hidden="true"><use href="#i-eye"/></svg>
-    <p>You're viewing a shared wish list. Tap <strong>I'll get this</strong> to keep track of what you're buying. It's saved on this device only.</p>
-    <div class="shared-banner-actions">
-      <button class="btn btn-ghost btn-sm" id="saveSharedBtn">Save a copy</button>
-      <a class="btn btn-ghost btn-sm" href="./">My lists</a>
-    </div>
-  </div>
-
-  <div class="layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-head">
-        <h2>Lists</h2>
-        <button class="btn-text" id="newListBtn"><svg aria-hidden="true"><use href="#i-plus"/></svg>New</button>
-      </div>
-      <nav class="list-nav" id="listNav" aria-label="Your wish lists"></nav>
-    </aside>
-
-    <main class="main">
-      <section class="hero" id="hero">
-        <button class="hero-emoji" id="heroEmoji" title="Edit list" aria-label="Edit list"></button>
-        <div class="hero-text">
-          <h1 id="listTitle"></h1>
-          <p class="hero-sub" id="listSub"></p>
-        </div>
-        <button class="btn btn-ghost hero-edit" id="editListBtn">Edit list</button>
-      </section>
-
-      <section class="ledger" id="ledger" aria-label="List progress"></section>
-
-      <section class="toolbar">
-        <label class="search">
-          <svg aria-hidden="true"><use href="#i-search"/></svg>
-          <input type="search" id="search" placeholder="Search wishes" aria-label="Search wishes" />
-          <kbd class="search-kbd" aria-hidden="true">/</kbd>
-        </label>
-        <div class="chips" id="filterChips" role="tablist" aria-label="Filter by status">
-          <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="chip" data-filter="wanted" role="tab" aria-selected="false">Wanted</button>
-          <button class="chip" data-filter="reserved" role="tab" aria-selected="false">Reserved</button>
-          <button class="chip" data-filter="got" role="tab" aria-selected="false">Got it</button>
-        </div>
-        <select id="sort" class="select" aria-label="Sort">
-          <option value="priority">Sort: Priority</option>
-          <option value="newest">Sort: Newest</option>
-          <option value="price-asc">Sort: Price, low to high</option>
-          <option value="price-desc">Sort: Price, high to low</option>
-          <option value="name">Sort: Name</option>
-        </select>
-        <button class="btn btn-primary" id="addItemBtn">
-          <svg aria-hidden="true"><use href="#i-plus"/></svg>Add wish
-        </button>
-      </section>
-
-      <section class="grid" id="grid" aria-live="polite"></section>
-
-      <section class="empty" id="empty" hidden>
-        <svg class="empty-art" viewBox="0 0 120 120" aria-hidden="true">
-          <ellipse cx="60" cy="104" rx="38" ry="5" class="empty-art-shadow"/>
-          <rect x="24" y="52" width="72" height="48" rx="8" class="empty-art-box"/>
-          <rect x="18" y="38" width="84" height="18" rx="6" class="empty-art-lid"/>
-          <rect x="54" y="38" width="12" height="62" class="empty-art-ribbon"/>
-          <path d="M60 38c-6-14-26-18-26-6 0 6 10 8 26 6zM60 38c6-14 26-18 26-6 0 6-10 8-26 6z" class="empty-art-bow"/>
-          <path d="M98 16l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" class="empty-art-spark"/>
-          <path d="M20 22l1.3 3.7L25 27l-3.7 1.3L20 32l-1.3-3.7L15 27l3.7-1.3z" class="empty-art-spark"/>
-        </svg>
-        <h2 id="emptyTitle">Nothing here yet</h2>
-        <p id="emptyText">Add the first thing you're wishing for.</p>
-        <button class="btn btn-primary" id="emptyAddBtn">Add a wish</button>
-      </section>
-    </main>
-  </div>
-
-  <!-- Item dialog -->
-  <dialog class="modal" id="itemDialog" aria-labelledby="itemDialogTitle">
-    <form method="dialog" id="itemForm" class="modal-body">
-      <header class="modal-head">
-        <h2 id="itemDialogTitle">Add a wish</h2>
-        <button type="button" class="icon-btn" data-close aria-label="Close">
-          <svg aria-hidden="true"><use href="#i-close"/></svg>
-        </button>
       </header>
 
+      <label class="search" id="searchRow" hidden>
+        <svg aria-hidden="true"><use href="#i-search"/></svg>
+        <input type="search" id="search" placeholder="Search wishes" aria-label="Search wishes" autocomplete="off" />
+      </label>
+
+      <div class="shared-note" id="sharedNote" hidden>
+        <p>A wish list shared with you. Tap a wish and choose <strong>I'll get it</strong> to keep track of what you're buying. It's saved on this device only.</p>
+      </div>
+
+      <section class="hero" id="hero" aria-label="Savings"></section>
+
+      <section class="up-next">
+        <div class="section-head">
+          <h2 id="upNextTitle">Up next</h2>
+          <span class="section-count" id="upNextCount"></span>
+        </div>
+        <ul class="rows" id="rows"></ul>
+
+        <div class="section-head" id="doneHead" hidden>
+          <h2>Got it</h2>
+          <span class="section-count" id="doneCount"></span>
+        </div>
+        <ul class="rows rows-done" id="doneRows"></ul>
+
+        <div class="empty" id="empty" hidden>
+          <div class="empty-orb" aria-hidden="true"><svg><use href="#w-gift"/></svg></div>
+          <h3 id="emptyTitle">No wishes yet</h3>
+          <p id="emptyText">Add the first thing you're wishing for.</p>
+          <button class="pill-btn pill-primary" id="emptyAddBtn">Add a wish</button>
+        </div>
+      </section>
+
+      <nav class="tabbar" id="tabbar" aria-label="Main">
+        <button class="tab is-active" data-tab="wishes" aria-label="Wishes" aria-current="page"><svg aria-hidden="true"><use href="#i-heart"/></svg></button>
+        <button class="tab" data-tab="lists" aria-label="Your lists"><svg aria-hidden="true"><use href="#i-lists"/></svg></button>
+        <button class="tab" data-tab="add" aria-label="Add a wish"><svg aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button class="tab" data-tab="me" aria-label="Settings"><svg aria-hidden="true"><use href="#i-user"/></svg></button>
+      </nav>
+    </section>
+
+    <!-- Item screen -->
+    <section class="screen screen-item" id="itemScreen" aria-label="Wish details" aria-live="polite"></section>
+  </div>
+
+  <!-- Sheets -->
+  <dialog class="sheet" id="itemDialog" aria-labelledby="itemDialogTitle">
+    <form method="dialog" id="itemForm" class="sheet-body">
+      <header class="sheet-head">
+        <h2 id="itemDialogTitle">Add a wish</h2>
+        <button type="button" class="round-btn" data-close aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+      </header>
       <label class="field">
         <span>What do you wish for?</span>
-        <input name="title" required maxlength="120" placeholder="e.g. Noise-cancelling headphones" autocomplete="off" />
+        <input name="title" required maxlength="120" placeholder="Noise-cancelling headphones" autocomplete="off" />
       </label>
-
       <label class="field">
-        <span>Link <em>optional</em></span>
-        <input name="url" type="text" placeholder="https://" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" />
+        <span>Details <em>optional</em></span>
+        <input name="notes" maxlength="200" placeholder="Over-ear, black" autocomplete="off" />
       </label>
-
       <div class="field-row">
         <label class="field">
           <span>Price</span>
-          <input name="price" type="number" min="0" step="0.01" placeholder="0.00" inputmode="decimal" />
+          <input name="price" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal" />
         </label>
         <label class="field">
-          <span>Category</span>
-          <input name="category" list="categoryList" maxlength="40" placeholder="Tech, Books" autocomplete="off" />
-          <datalist id="categoryList"></datalist>
+          <span>Saved so far</span>
+          <input name="saved" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal" />
         </label>
       </div>
-
       <fieldset class="field">
-        <legend>How much do you want it?</legend>
-        <div class="segmented" id="prioritySeg">
-          <label><input type="radio" name="priority" value="1" /><span><svg aria-hidden="true"><use href="#i-flame"/></svg>Must have</span></label>
-          <label><input type="radio" name="priority" value="2" checked /><span><svg aria-hidden="true"><use href="#i-heart"/></svg>Would love</span></label>
-          <label><input type="radio" name="priority" value="3" /><span><svg aria-hidden="true"><use href="#i-sprout"/></svg>Nice to have</span></label>
+        <legend>Want level</legend>
+        <div class="choice" id="prioritySeg">
+          <label><input type="radio" name="priority" value="1" /><span>High</span></label>
+          <label><input type="radio" name="priority" value="2" checked /><span>Medium</span></label>
+          <label><input type="radio" name="priority" value="3" /><span>Low</span></label>
         </div>
       </fieldset>
-
+      <div class="field-row">
+        <label class="field">
+          <span>Category <em>optional</em></span>
+          <input name="category" list="categoryList" maxlength="40" placeholder="Tech" autocomplete="off" />
+          <datalist id="categoryList"></datalist>
+        </label>
+        <label class="field">
+          <span>Link <em>optional</em></span>
+          <input name="url" type="text" placeholder="shop.com/…" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" />
+        </label>
+      </div>
       <label class="field">
         <span>Image link <em>optional</em></span>
         <input name="image" type="text" placeholder="https://…/photo.jpg" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" />
       </label>
-
-      <label class="field">
-        <span>Notes</span>
-        <textarea name="notes" rows="3" maxlength="500" placeholder="Size, colour, model, anything that helps"></textarea>
-      </label>
-
-      <footer class="modal-foot">
-        <button type="button" class="btn btn-danger-ghost" id="deleteItemBtn" hidden>Delete</button>
-        <span class="spacer"></span>
-        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" id="itemSubmit">Add wish</button>
+      <footer class="sheet-foot">
+        <button type="button" class="pill-btn pill-ghost" data-close>Cancel</button>
+        <button type="submit" class="pill-btn pill-primary" id="itemSubmit">Add wish</button>
       </footer>
     </form>
   </dialog>
 
-  <!-- List dialog -->
-  <dialog class="modal" id="listDialog" aria-labelledby="listDialogTitle">
-    <form method="dialog" id="listForm" class="modal-body">
-      <header class="modal-head">
-        <h2 id="listDialogTitle">New list</h2>
-        <button type="button" class="icon-btn" data-close aria-label="Close">
-          <svg aria-hidden="true"><use href="#i-close"/></svg>
-        </button>
+  <dialog class="sheet" id="moneyDialog" aria-labelledby="moneyDialogTitle">
+    <form method="dialog" id="moneyForm" class="sheet-body">
+      <header class="sheet-head">
+        <h2 id="moneyDialogTitle">Add money</h2>
+        <button type="button" class="round-btn" data-close aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
       </header>
+      <label class="field">
+        <span>Put it towards</span>
+        <select name="item" class="select" id="moneyItem"></select>
+      </label>
+      <label class="field">
+        <span>Amount</span>
+        <input name="amount" type="number" min="0.01" step="0.01" required placeholder="0" inputmode="decimal" class="input-big" />
+      </label>
+      <div class="quick" id="moneyQuick">
+        <button type="button" data-add="10">+10</button>
+        <button type="button" data-add="20">+20</button>
+        <button type="button" data-add="50">+50</button>
+        <button type="button" data-add="100">+100</button>
+      </div>
+      <footer class="sheet-foot">
+        <button type="button" class="pill-btn pill-ghost" data-close>Cancel</button>
+        <button type="submit" class="pill-btn pill-primary">Add money</button>
+      </footer>
+    </form>
+  </dialog>
 
+  <dialog class="sheet" id="listsDialog" aria-labelledby="listsDialogTitle">
+    <div class="sheet-body">
+      <header class="sheet-head">
+        <h2 id="listsDialogTitle">Your lists</h2>
+        <button type="button" class="round-btn" data-close aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+      </header>
+      <ul class="menu-list" id="listsMenu"></ul>
+      <footer class="sheet-foot">
+        <button type="button" class="pill-btn pill-ghost" id="editListBtn">Edit this list</button>
+        <button type="button" class="pill-btn pill-primary" id="newListBtn">New list</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="listDialog" aria-labelledby="listDialogTitle">
+    <form method="dialog" id="listForm" class="sheet-body">
+      <header class="sheet-head">
+        <h2 id="listDialogTitle">New list</h2>
+        <button type="button" class="round-btn" data-close aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+      </header>
       <label class="field">
         <span>Name</span>
         <input name="name" required maxlength="60" placeholder="Birthday, Holidays, Home" autocomplete="off" />
       </label>
-
       <fieldset class="field">
         <legend>Icon</legend>
         <div class="emoji-picker" id="emojiPicker"></div>
       </fieldset>
-
       <label class="field">
         <span>Currency</span>
         <select name="currency" class="select">
@@ -224,41 +233,55 @@
           <option value="CHF">CHF Swiss Franc</option>
         </select>
       </label>
-
-      <footer class="modal-foot">
-        <button type="button" class="btn btn-danger-ghost" id="deleteListBtn" hidden>Delete list</button>
-        <span class="spacer"></span>
-        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" id="listSubmit">Create list</button>
+      <footer class="sheet-foot">
+        <button type="button" class="pill-btn pill-danger" id="deleteListBtn" hidden>Delete</button>
+        <button type="button" class="pill-btn pill-ghost" data-close>Cancel</button>
+        <button type="submit" class="pill-btn pill-primary" id="listSubmit">Create list</button>
       </footer>
     </form>
   </dialog>
 
-  <!-- Share dialog -->
-  <dialog class="modal" id="shareDialog" aria-labelledby="shareDialogTitle">
-    <div class="modal-body">
-      <header class="modal-head">
-        <h2 id="shareDialogTitle">Share this list</h2>
-        <button type="button" class="icon-btn" data-close aria-label="Close">
-          <svg aria-hidden="true"><use href="#i-close"/></svg>
-        </button>
+  <dialog class="sheet" id="meDialog" aria-labelledby="meDialogTitle">
+    <div class="sheet-body">
+      <header class="sheet-head">
+        <h2 id="meDialogTitle">Settings</h2>
+        <button type="button" class="round-btn" data-close aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
       </header>
-      <p class="muted">Anyone with this link sees a snapshot of your list. Items you've marked <em>Got it</em> are left out. Added more wishes later? Share a fresh link.</p>
-      <label class="check">
-        <input type="checkbox" id="shareHideReserved" checked />
-        <span>Hide which items are reserved, to keep the surprise</span>
-      </label>
-      <div class="share-row">
-        <input id="shareUrl" readonly aria-label="Share link" />
-        <button class="btn btn-primary" id="copyShareBtn">Copy link</button>
-      </div>
-      <button class="btn btn-ghost share-native" id="nativeShareBtn" hidden>Share via…</button>
+      <ul class="menu-list">
+        <li><button class="menu-row" data-action="share"><span class="menu-icon"><svg aria-hidden="true"><use href="#i-share"/></svg></span><span class="menu-text">Share this list</span></button></li>
+        <li><button class="menu-row" data-action="theme"><span class="menu-icon"><svg aria-hidden="true"><use href="#i-moon"/></svg></span><span class="menu-text">Dark mode</span><span class="switch" id="themeSwitch" aria-hidden="true"></span></button></li>
+        <li><button class="menu-row" data-action="export"><span class="menu-icon"><svg aria-hidden="true"><use href="#i-download"/></svg></span><span class="menu-text">Export backup</span></button></li>
+        <li><button class="menu-row" data-action="import"><span class="menu-icon"><svg aria-hidden="true"><use href="#i-upload"/></svg></span><span class="menu-text">Import backup</span></button></li>
+      </ul>
+      <p class="fine">Your lists are saved in this browser only. Export a backup to move them to another device.</p>
+      <input type="file" id="importFile" accept="application/json,.json" hidden />
     </div>
   </dialog>
 
+  <dialog class="sheet" id="shareDialog" aria-labelledby="shareDialogTitle">
+    <div class="sheet-body">
+      <header class="sheet-head">
+        <h2 id="shareDialogTitle">Share this list</h2>
+        <button type="button" class="round-btn" data-close aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+      </header>
+      <p class="fine">Anyone with the link sees a snapshot of your open wishes. Savings and "Got it" items stay private. Added more wishes later? Share a fresh link.</p>
+      <label class="check">
+        <input type="checkbox" id="shareHideReserved" checked />
+        <span>Hide which wishes are reserved, to keep the surprise</span>
+      </label>
+      <div class="share-row">
+        <input id="shareUrl" readonly aria-label="Share link" />
+        <button class="pill-btn pill-primary" id="copyShareBtn">Copy</button>
+      </div>
+      <button class="pill-btn pill-ghost" id="nativeShareBtn" hidden>Share via…</button>
+    </div>
+  </dialog>
+
+  <div class="popover" id="itemMenu" role="menu" hidden></div>
+
   <div class="toast" id="toast" role="status" aria-live="polite" hidden>
     <span id="toastMsg"></span>
-    <button class="btn-text" id="toastAction" hidden></button>
+    <button class="toast-action" id="toastAction" hidden></button>
   </div>
 
   <script src="app.js"></script>
